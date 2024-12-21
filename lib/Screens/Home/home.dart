@@ -16,19 +16,20 @@ class HomeScreen extends StatelessWidget {
       ),
       body: const SingleChildScrollView(
         child: Padding(
-          padding:
-              EdgeInsets.only(left: TSizes.md * 1.5, right: TSizes.md * 1.5),
+          padding: EdgeInsets.only(left: TSizes.md * 1.5, right: TSizes.md * 1.5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Welcome,",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-              Text("User",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400)),
+              Text("Welcome," , style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+              Text("User", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400)),
               SizedBox(height: TSizes.md),
+
               BotDetails(),
+
               SizedBox(height: TSizes.md),
+
               CleaningSchedule(),
+
             ],
           ),
         ),

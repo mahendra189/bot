@@ -28,7 +28,7 @@ class BotDetails extends StatelessWidget {
       ),
       child: Padding(
         padding:
-            const EdgeInsets.only(top: 10, left: 23, right: 23, bottom: 10),
+        const EdgeInsets.only(top: 10, left: 23, right: 23, bottom: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -45,31 +45,27 @@ class BotDetails extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 21, fontWeight: FontWeight.w600)),
                     Obx(
-                      () => Text(
-                          botController.isRunning.value
-                              ? "Cleaning"
-                              : "Resting...",
-                          style:
-                              const TextStyle(fontWeight: FontWeight.normal)),
+                        () => Text(botController.isRunning.value ? "Cleaning" : "Resting...",
+                          style: const TextStyle(fontWeight: FontWeight.normal)),
                     ),
                   ],
                 ),
                 Obx(() => OutlinedButton(
-                      onPressed: () => botController.toggleStatus(),
-                      style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          side: BorderSide(
-                            color: Colors.grey.shade400,
-                          ),
-                          textStyle: const TextStyle(color: Colors.black)),
-                      child: Text(
-                        botController.isRunning.value ? "Pause" : "Start",
-                        style:
-                            const TextStyle(color: Colors.black, fontSize: 16),
+                  onPressed: () => botController.toggleStatus(),
+                  style: OutlinedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                    )),
+                      side: BorderSide(
+                        color: Colors.grey.shade400,
+                      ),
+                      textStyle: const TextStyle(color: Colors.black)),
+                  child: Text(
+                    botController.isRunning.value ? "Pause" : "Start",
+                    style: const TextStyle(
+                        color: Colors.black, fontSize: 16),
+                  ),
+                )),
               ],
             ),
             const SizedBox(height: TSizes.spaceBtwItems * 1.5),
@@ -82,24 +78,23 @@ class BotDetails extends StatelessWidget {
                     const Text("Battery Level",
                         style: TextStyle(
                             fontSize: 21, fontWeight: FontWeight.w600)),
-                    Text(
-                        "${(botController.batteryLevel.value * 100).toStringAsFixed(0)}%",
+                    Text("${(botController.batteryLevel.value * 100).toStringAsFixed(0)}%",
                         style: const TextStyle(fontWeight: FontWeight.normal)),
                   ],
                 ),
                 Obx(() => ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: SizedBox(
-                        height: 5,
-                        width: 150,
-                        child: LinearProgressIndicator(
-                          value: botController.batteryLevel.value,
-                          backgroundColor: Colors.grey.shade300,
-                          valueColor:
-                              const AlwaysStoppedAnimation<Color>(Colors.black),
-                        ),
-                      ),
-                    )),
+                  borderRadius: BorderRadius.circular(15),
+                  child: SizedBox(
+                    height: 5,
+                    width: 150,
+                    child: LinearProgressIndicator(
+                      value: botController.batteryLevel.value,
+                      backgroundColor: Colors.grey.shade300,
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                          Colors.black),
+                    ),
+                  ),
+                )),
               ],
             ),
             const SizedBox(height: 8),
