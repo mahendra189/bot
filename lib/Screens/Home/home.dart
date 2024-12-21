@@ -26,12 +26,9 @@ class HomeScreen extends StatelessWidget {
               Text("User",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400)),
               SizedBox(height: TSizes.md),
-
-              // BotDetails(),
-
+              BotDetails(),
               SizedBox(height: TSizes.md),
-
-              // CleaningSchedule(),
+              CleaningSchedule(),
             ],
           ),
         ),

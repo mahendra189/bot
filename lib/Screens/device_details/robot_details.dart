@@ -32,259 +32,262 @@ class RobotManagementPage extends StatelessWidget {
         pageName: 'Robot Details',
       ),
       body: Padding(
-        padding: const EdgeInsets.only(
-          top: TSizes.md,
-          left: TSizes.lg * 1.5,
-          right: TSizes.lg * 2,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          padding: const EdgeInsets.only(
+            top: TSizes.md,
+            left: TSizes.lg * 1.5,
+            right: TSizes.lg * 2,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Status',
-                    style:
-                        TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Obx(() => Text(
-                        botController.isRunning.value ? "Cleaning" : "At Rest",
-                        style: const TextStyle(fontSize: 23))),
-                    const SizedBox(width: TSizes.md),
+                    const Text('Status',
+                        style: TextStyle(
+                            fontSize: 35, fontWeight: FontWeight.bold)),
+                    Row(
+                      children: [
+                        Obx(() => Text(
+                            botController.isRunning.value
+                                ? "Cleaning"
+                                : "At Rest",
+                            style: const TextStyle(fontSize: 23))),
+                        const SizedBox(width: TSizes.md),
+                        Obx(
+                          () => Container(
+                            width: 16,
+                            height: 16,
+                            decoration: BoxDecoration(
+                              color: botController.isRunning.value
+                                  ? Colors.green
+                                  : Colors.grey,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: TSizes.spaceBtwSections),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     Obx(
-                      () => Container(
-                        width: 16,
-                        height: 16,
-                        decoration: BoxDecoration(
-                          color: botController.isRunning.value
-                              ? Colors.green
-                              : Colors.grey,
-                          shape: BoxShape.circle,
+                      () => OutlinedButton(
+                        onPressed: () => botController.toggleStatus(),
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: botController.isRunning.value
+                              ? Colors.grey[300]
+                              : null,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          side: BorderSide(
+                            color: botController.isRunning.value
+                                ? Colors.grey[300] ?? Colors.grey
+                                : Colors.black,
+                          ),
+                          textStyle: const TextStyle(color: Colors.black),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 30.0,
+                            vertical: 10.0,
+                          ),
+                        ),
+                        child: Text(
+                          "Start",
+                          style: TextStyle(
+                              color: botController.isRunning.value
+                                  ? Colors.grey[500]
+                                  : Colors.black,
+                              fontSize: 25),
+                        ),
+                      ),
+                    ),
+                    Obx(
+                      () => OutlinedButton(
+                        onPressed: () => botController.toggleStatus(),
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: botController.isRunning.value
+                              ? null
+                              : Colors.grey[300] ?? Colors.grey,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          side: BorderSide(
+                            color: botController.isRunning.value
+                                ? Colors.black
+                                : Colors.grey[100] ?? Colors.grey,
+                          ),
+                          textStyle: const TextStyle(color: Colors.black),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 25.0,
+                            vertical: 10.0,
+                          ),
+                        ),
+                        child: Text(
+                          "Pause",
+                          style: TextStyle(
+                            color: botController.isRunning.value
+                                ? Colors.black
+                                : Colors.grey[500] ?? Colors.grey,
+                            fontSize: 25,
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
-            const SizedBox(height: TSizes.spaceBtwSections),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Obx(
-                  () => OutlinedButton(
-                    onPressed: () => botController.toggleStatus(),
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: botController.isRunning.value
-                          ? Colors.grey[300]
-                          : null,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      side: BorderSide(
-                        color: botController.isRunning.value
-                            ? Colors.grey[300] ?? Colors.grey
-                            : Colors.black,
-                      ),
-                      textStyle: const TextStyle(color: Colors.black),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 30.0,
-                        vertical: 10.0,
-                      ),
-                    ),
-                    child: Text(
-                      "Start",
-                      style: TextStyle(
-                          color: botController.isRunning.value
-                              ? Colors.grey[500]
-                              : Colors.black,
-                          fontSize: 25),
-                    ),
+                const SizedBox(height: TSizes.spaceBtwSections),
+                Container(
+                  padding: const EdgeInsets.only(left: 30, right: 30),
+                  child: const StepProgressIndicator(
+                    totalSteps: 10,
+                    currentStep: 6,
+                    size: 12,
+                    roundedEdges: Radius.circular(10),
+                    selectedColor: Colors.green,
+                    unselectedColor: Colors.grey,
                   ),
                 ),
-                Obx(
-                  () => OutlinedButton(
-                    onPressed: () => botController.toggleStatus(),
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: botController.isRunning.value
-                          ? null
-                          : Colors.grey[300] ?? Colors.grey,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      side: BorderSide(
-                        color: botController.isRunning.value
-                            ? Colors.black
-                            : Colors.grey[100] ?? Colors.grey,
-                      ),
-                      textStyle: const TextStyle(color: Colors.black),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 25.0,
-                        vertical: 10.0,
-                      ),
-                    ),
-                    child: Text(
-                      "Pause",
-                      style: TextStyle(
-                        color: botController.isRunning.value
-                            ? Colors.black
-                            : Colors.grey[500] ?? Colors.grey,
-                        fontSize: 25,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: TSizes.spaceBtwSections),
-            Container(
-              padding: const EdgeInsets.only(left: 30, right: 30),
-              child: const StepProgressIndicator(
-                totalSteps: 10,
-                currentStep: 6,
-                size: 12,
-                roundedEdges: Radius.circular(10),
-                selectedColor: Colors.green,
-                unselectedColor: Colors.grey,
-              ),
-            ),
-            const SizedBox(height: TSizes.spaceBtwSections / 2),
-            Row(
-              children: [
-                Text('Starts in $remainingTime',
-                    style: const TextStyle(fontSize: 20)),
-                const SizedBox(width: TSizes.md * 1.5),
-              ],
-            ),
-            const SizedBox(height: TSizes.spaceBtwSections / 3),
-            Divider(
-                color: Colors.grey[400],
-                thickness: 0.7,
-                indent: 0,
-                endIndent: 0),
-            const SizedBox(height: TSizes.spaceBtwSections / 3),
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 20, left: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Text('Battery Level',
-                          style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold)),
-                      Text(
-                          "${(botController.batteryLevel.value * 100).toStringAsFixed(0)}%",
-                          style: const TextStyle(fontSize: 20)),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: TSizes.spaceBtwItems * 1.5),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: SizedBox(
-                    height: 8,
-                    width: 300,
-                    child: LinearProgressIndicator(
-                      value: 0.80,
-                      backgroundColor: Colors.grey.shade300,
-                      valueColor:
-                          const AlwaysStoppedAnimation<Color>(Colors.black),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: TSizes.spaceBtwItems * 1.5),
-                Divider(
-                  color: Colors.grey[400],
-                  thickness: 0.7,
-                  indent: 0,
-                  endIndent: 0,
-                ),
-              ],
-            ),
-            const SizedBox(height: TSizes.spaceBtwSections / 1.7),
-            Column(
-              children: [
-                const Row(
-                  children: [
-                    SizedBox(width: TSizes.md),
-                    Icon(Iconsax.cloud, size: 35),
-                    SizedBox(width: TSizes.lg),
-                    Text('Wind Speed', style: TextStyle(fontSize: 23)),
-                    SizedBox(width: TSizes.lg),
-                    Text('10 ',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    Text('kmph', style: TextStyle(fontSize: 15)),
-                  ],
-                ),
-                const SizedBox(height: TSizes.spaceBtwItems),
-                Divider(
-                  color: Colors.grey[400],
-                  thickness: 0.7,
-                  indent: 0,
-                  endIndent: 0,
-                ),
-              ],
-            ),
-            const SizedBox(height: TSizes.spaceBtwSections / 1.7),
-            Column(
-              children: [
-                const Row(
-                  children: [
-                    SizedBox(width: TSizes.md),
-                    Icon(Iconsax.cloud_drizzle, size: 37),
-                    SizedBox(width: TSizes.lg),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Partly Cloudy',
-                            style: TextStyle(
-                                fontSize: 23, fontWeight: FontWeight.w500)),
-                        Text('Safe to operate',
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w300)),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: TSizes.spaceBtwItems),
-                Divider(
-                  color: Colors.grey[400],
-                  thickness: 0.7,
-                  indent: 0,
-                  endIndent: 0,
-                ),
-              ],
-            ),
-            const SizedBox(height: TSizes.spaceBtwSections / 1.7),
-            const Column(
-              children: [
+                const SizedBox(height: TSizes.spaceBtwSections / 2),
                 Row(
                   children: [
-                    SizedBox(width: TSizes.md),
-                    Icon(Iconsax.setting, size: 37),
-                    SizedBox(width: TSizes.lg),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Text('Starts in $remainingTime',
+                        style: const TextStyle(fontSize: 20)),
+                    const SizedBox(width: TSizes.md * 1.5),
+                  ],
+                ),
+                const SizedBox(height: TSizes.spaceBtwSections / 3),
+                Divider(
+                    color: Colors.grey[400],
+                    thickness: 0.7,
+                    indent: 0,
+                    endIndent: 0),
+                const SizedBox(height: TSizes.spaceBtwSections / 3),
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20, left: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text('Battery Level',
+                              style: TextStyle(
+                                  fontSize: 25, fontWeight: FontWeight.bold)),
+                          Text(
+                              "${(botController.batteryLevel.value * 100).toStringAsFixed(0)}%",
+                              style: const TextStyle(fontSize: 20)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: TSizes.spaceBtwItems * 1.5),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: SizedBox(
+                        height: 8,
+                        width: 300,
+                        child: LinearProgressIndicator(
+                          value: 0.50,
+                          backgroundColor: Colors.grey.shade300,
+                          valueColor:
+                              const AlwaysStoppedAnimation<Color>(Colors.black),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: TSizes.spaceBtwItems * 1.5),
+                    Divider(
+                      color: Colors.grey[400],
+                      thickness: 0.7,
+                      indent: 0,
+                      endIndent: 0,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: TSizes.spaceBtwSections / 1.7),
+                Column(
+                  children: [
+                    const Row(
                       children: [
-                        Text('Maintenance',
+                        SizedBox(width: TSizes.md),
+                        Icon(Iconsax.cloud, size: 35),
+                        SizedBox(width: TSizes.lg),
+                        Text('Wind Speed', style: TextStyle(fontSize: 23)),
+                        SizedBox(width: TSizes.lg),
+                        Text('10 ',
                             style: TextStyle(
-                                fontSize: 23, fontWeight: FontWeight.w500)),
-                        Text('Due in 2 weeks',
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w300)),
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        Text('kmph', style: TextStyle(fontSize: 15)),
+                      ],
+                    ),
+                    const SizedBox(height: TSizes.spaceBtwItems),
+                    Divider(
+                      color: Colors.grey[400],
+                      thickness: 0.7,
+                      indent: 0,
+                      endIndent: 0,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: TSizes.spaceBtwSections / 1.7),
+                Column(
+                  children: [
+                    const Row(
+                      children: [
+                        SizedBox(width: TSizes.md),
+                        Icon(Iconsax.cloud_drizzle, size: 37),
+                        SizedBox(width: TSizes.lg),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Partly Cloudy',
+                                style: TextStyle(
+                                    fontSize: 23, fontWeight: FontWeight.w500)),
+                            Text('Safe to operate',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w300)),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: TSizes.spaceBtwItems),
+                    Divider(
+                      color: Colors.grey[400],
+                      thickness: 0.7,
+                      indent: 0,
+                      endIndent: 0,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: TSizes.spaceBtwSections / 1.7),
+                const Column(
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(width: TSizes.md),
+                        Icon(Iconsax.setting, size: 37),
+                        SizedBox(width: TSizes.lg),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Maintenance',
+                                style: TextStyle(
+                                    fontSize: 23, fontWeight: FontWeight.w500)),
+                            Text('Due in 2 weeks',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w300)),
+                          ],
+                        ),
                       ],
                     ),
                   ],
                 ),
               ],
             ),
-          ],
-        ),
-      ),
+          )),
     );
   }
 }

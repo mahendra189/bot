@@ -18,13 +18,13 @@ class BotController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchData();
+    // fetchData();
   }
 
   void toggleStatus() async {
     isRunning.value = !isRunning.value;
     String newStatus = isRunning.value ? 'cleaning' : 'resting';
-    await _apiService.updateStatus(newStatus);
+    // await _apiService.updateStatus(newStatus);
   }
 
   Future<void> fetchData() async {
