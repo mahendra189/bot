@@ -34,7 +34,8 @@ class ProfileModel {
       if (userId != null) {
         String downloadUrl = await _uploadImageToStorage(pickedFile, userId);
         await _updateProfileImageUrl(userId, downloadUrl);
-        profileImageNotifier.value = downloadUrl;  // Notify UI about new image URL
+        profileImageNotifier.value =
+            downloadUrl; // Notify UI about new image URL
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Profile picture updated')),
         );
@@ -89,7 +90,7 @@ class ProfileModel {
         lNameController.text = data['lastName'] ?? '';
         phoneNoController.text = data['phoneNumber'] ?? '';
         systemIDController.text = data['systemId'] ?? '';
-        profileImageNotifier.value = data['profileImageUrl'] ?? '';  // Notify UI
+        profileImageNotifier.value = data['profileImageUrl'] ?? ''; // Notify UI
       }
     } catch (e) {
       print('Error fetching user data: $e');
@@ -104,7 +105,7 @@ class ProfileModel {
         'firstName': fNameController.text,
         'lastName': lNameController.text,
         'phoneNumber': phoneNoController.text,
-        'profileImageUrl': profileImageNotifier.value,  // Use current image URL
+        'profileImageUrl': profileImageNotifier.value, // Use current image URL
       });
       FocusScope.of(context).unfocus();
       ScaffoldMessenger.of(context).showSnackBar(

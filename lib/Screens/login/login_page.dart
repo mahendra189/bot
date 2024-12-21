@@ -1,9 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:bot/Screens/login/login_model.dart';
 import 'package:bot/utils/auth_service/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/bottomNavBar/bottom_Nav_Bar.dart';
 

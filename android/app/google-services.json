@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1065773319377",
+    "project_id": "botapp-2a1e3",
+    "storage_bucket": "botapp-2a1e3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065773319377:android:e1b9285365db53ceb8f1f0",
+        "android_client_info": {
+          "package_name": "com.example.bot"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDynjbpDgEpinBm9BetCXUtMsrZfPNwueo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

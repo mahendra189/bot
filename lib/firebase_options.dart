@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -50,11 +47,11 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDcBD0f66vRz1cojhxv4skxJsKoeZqPQaI',
-    appId: '1:881686216361:android:fd3762d25c619a8f0773b8',
-    messagingSenderId: '881686216361',
-    projectId: 'solar-a1dbb',
-    storageBucket: 'solar-a1dbb.appspot.com',
+    apiKey: 'AIzaSyDynjbpDgEpinBm9BetCXUtMsrZfPNwueo',
+    appId: '1:1065773319377:android:e1b9285365db53ceb8f1f0',
+    messagingSenderId: '1065773319377',
+    projectId: 'botapp-2a1e3',
+    storageBucket: 'botapp-2a1e3.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -63,9 +60,20 @@ class DefaultFirebaseOptions {
     messagingSenderId: '881686216361',
     projectId: 'solar-a1dbb',
     storageBucket: 'solar-a1dbb.appspot.com',
-    androidClientId: '881686216361-jif29pnaripbmeskse6o9iatuppn4vgg.apps.googleusercontent.com',
-    iosClientId: '881686216361-u0u6g81b53e3d7aih41j2mcle970p38i.apps.googleusercontent.com',
+    androidClientId:
+        '881686216361-jif29pnaripbmeskse6o9iatuppn4vgg.apps.googleusercontent.com',
+    iosClientId:
+        '881686216361-u0u6g81b53e3d7aih41j2mcle970p38i.apps.googleusercontent.com',
     iosBundleId: 'com.botManagement.bot',
+  );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCCSUbdnpUaW2W31S1IVfdfnem4j1A7_FI',
+    appId: '1:1065773319377:web:e7bea717d4cba04db8f1f0',
+    messagingSenderId: '1065773319377',
+    projectId: 'botapp-2a1e3',
+    authDomain: 'botapp-2a1e3.firebaseapp.com',
+    storageBucket: 'botapp-2a1e3.firebasestorage.app',
   );
 
 }

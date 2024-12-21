@@ -38,6 +38,14 @@ dependencies:
   animate_do: ^3.3.4
   iconsax: ^0.0.8
   get: ^4.6.6
+  url_launcher: ^6.3.1
+  firebase_auth: ^5.3.4
+  shared_preferences: ^2.3.4
+  step_progress_indicator: ^1.0.2
+  intl: ^0.20.1
+  cloud_firestore: ^5.6.0
+  firebase_storage: ^12.3.7
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -55,11 +63,21 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  uses-material-design: true
+  assets:
+    - assets/images/
+  fonts:
+    - family: ProductSans
+      fonts:
+        - asset: assets/fonts/ProductSansBold.ttf
+        - asset: assets/fonts/ProductSansRegular.ttf
+        - asset: assets/fonts/ProductSansBoldItalic.ttf
+          style: italic
+        - asset: assets/fonts/ProductSansItalic.ttf
+          style: italic
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-  uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
   # assets:

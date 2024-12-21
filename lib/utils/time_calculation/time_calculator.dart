@@ -4,20 +4,23 @@ import 'package:intl/date_symbol_data_local.dart';
 DateTime parseRelativeTime(String relativeTime) {
   initializeDateFormatting('en_US'); // Initialize the locale you are using
   final now = DateTime.now();
-
+  relativeTime = "Tomorrow 7:00pm";
   relativeTime = relativeTime.trim().toLowerCase();
   print("Parsing relative time: $relativeTime");
+  print(relativeTime);
 
   try {
     if (relativeTime.startsWith("tomorrow")) {
       final timePart = relativeTime.replaceFirst("tomorrow", "").trim();
       print("Time part: $timePart");
-      final time = DateFormat("HH:mm", "en_US").parse(timePart); // Changed to 24-hour format
+      final time = DateFormat("HH:mm", "en_US")
+          .parse(timePart); // Changed to 24-hour format
       return DateTime(now.year, now.month, now.day + 1, time.hour, time.minute);
     } else if (relativeTime.startsWith("today")) {
       final timePart = relativeTime.replaceFirst("today", "").trim();
       print("Time part: $timePart");
-      final time = DateFormat("HH:mm", "en_US").parse(timePart); // Changed to 24-hour format
+      final time = DateFormat("HH:mm", "en_US")
+          .parse(timePart); // Changed to 24-hour format
       return DateTime(now.year, now.month, now.day, time.hour, time.minute);
     } else {
       throw const FormatException("Unsupported relative time format");

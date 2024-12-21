@@ -26,7 +26,6 @@ class RobotManagementPage extends StatelessWidget {
 
     final formattedScheduledTime = DateFormat('h:mma').format(scheduledTime);
 
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const BAppBar(
@@ -49,14 +48,18 @@ class RobotManagementPage extends StatelessWidget {
                         TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
                 Row(
                   children: [
-                    Obx(() => Text(botController.isRunning.value ? "Cleaning" : "At Rest", style: const TextStyle(fontSize: 23))),
+                    Obx(() => Text(
+                        botController.isRunning.value ? "Cleaning" : "At Rest",
+                        style: const TextStyle(fontSize: 23))),
                     const SizedBox(width: TSizes.md),
                     Obx(
-                      ()=> Container(
+                      () => Container(
                         width: 16,
                         height: 16,
                         decoration: BoxDecoration(
-                          color: botController.isRunning.value ? Colors.green  : Colors.grey,
+                          color: botController.isRunning.value
+                              ? Colors.green
+                              : Colors.grey,
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -93,8 +96,9 @@ class RobotManagementPage extends StatelessWidget {
                     child: Text(
                       "Start",
                       style: TextStyle(
-                          color:
-                          botController.isRunning.value ? Colors.grey[500] : Colors.black,
+                          color: botController.isRunning.value
+                              ? Colors.grey[500]
+                              : Colors.black,
                           fontSize: 25),
                     ),
                   ),
@@ -148,9 +152,10 @@ class RobotManagementPage extends StatelessWidget {
             const SizedBox(height: TSizes.spaceBtwSections / 2),
             Row(
               children: [
-                Text('Starts in $remainingTime', style: const TextStyle(fontSize: 20)),
+                Text('Starts in $remainingTime',
+                    style: const TextStyle(fontSize: 20)),
                 const SizedBox(width: TSizes.md * 1.5),
-                ],
+              ],
             ),
             const SizedBox(height: TSizes.spaceBtwSections / 3),
             Divider(

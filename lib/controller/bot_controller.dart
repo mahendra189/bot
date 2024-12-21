@@ -31,10 +31,12 @@ class BotController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? uid = prefs.getString('UID');
     if (uid == null) {
-      throw Exception('UID not found in shared preferences');
+      print('UID not found in shared preferences');
+      // throw Exception('UID not found in shared preferences');
     }
 
-    final response = await http.get(Uri.parse('http://10.0.2.2:5000/get_modules/$uid'));
+    final response =
+        await http.get(Uri.parse('http://10.0.2.2:5000/get_modules/$uid'));
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
