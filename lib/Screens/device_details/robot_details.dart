@@ -9,6 +9,14 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 import '../../utils/constants/sizes.dart';
 
+// realtime database
+// bot
+//    unique id
+//    current status
+//    battery
+//    next cleaning time -> time
+//    frequency -> daily/weekly
+
 class RobotManagementPage extends StatelessWidget {
   RobotManagementPage({super.key});
 

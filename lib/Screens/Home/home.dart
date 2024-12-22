@@ -4,6 +4,20 @@ import 'package:bot/utils/appBar/bAppBar.dart';
 import 'package:bot/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 
+// realtime
+//  get data with uid of the bot
+// https://solarbot-445211-default-rtdb.firebaseio.com/bots/${bid}/" ->
+
+//    unique id
+//    current status
+//    battery
+
+//
+//  firestore
+//  users (uid)
+//     profile details
+//     list of uids bots of this users
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 

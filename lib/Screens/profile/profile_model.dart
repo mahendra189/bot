@@ -20,6 +20,7 @@ class ProfileModel {
   Future<void> fetchUserID() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userId = prefs.getString('UID');
+    print(userId);
     if (userId != null) {
       await fetchUserData(userId);
     }
@@ -40,6 +41,8 @@ class ProfileModel {
           const SnackBar(content: Text('Profile picture updated')),
         );
       }
+    } else {
+      print("Select a image");
     }
   }
 
@@ -79,6 +82,7 @@ class ProfileModel {
   }
 
   Future<void> fetchUserData(String userId) async {
+    print(userId);
     try {
       DocumentSnapshot doc = await FirebaseFirestore.instance
           .collection('users')

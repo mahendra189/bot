@@ -75,5 +75,4 @@ class DefaultFirebaseOptions {
     authDomain: 'botapp-2a1e3.firebaseapp.com',
     storageBucket: 'botapp-2a1e3.firebasestorage.app',
   );
-
 }

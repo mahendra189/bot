@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 
 import '../../models/bot_model.dart';
 
+// data structure
+// bots
+//    list of bots
+
+
 class BotsList extends StatelessWidget {
   const BotsList({super.key});
 
