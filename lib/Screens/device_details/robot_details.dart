@@ -1,6 +1,8 @@
 import 'package:bot/controller/bot_controller.dart';
+import 'package:bot/models/bot_model.dart';
 import 'package:bot/utils/appBar/bAppBar.dart';
 import 'package:bot/utils/time_calculation/time_calculator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -26,14 +28,14 @@ class RobotManagementPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Initialize the BotController
     final BotController botController = Get.put(BotController());
-
+    final BotModal model = BotModal();
+    final BotDetail = false;
     // Replace this with the time fetched from the API
     final relativeTime = botController.nextCleaning.value;
     final scheduledTime = parseRelativeTime(relativeTime);
     final remainingTime = getRemainingTime(scheduledTime);
 
     final formattedScheduledTime = DateFormat('h:mma').format(scheduledTime);
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const BAppBar(
@@ -46,9 +48,20 @@ class RobotManagementPage extends StatelessWidget {
             right: TSizes.lg * 2,
           ),
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              if (!BotDetail)
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('No Robot Available',
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.bold)),
+                    const Icon(CupertinoIcons.wifi_slash)
+                  ],
+                ),
+              // ignore: dead_code
+              if (BotDetail) ...[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -85,7 +98,10 @@ class RobotManagementPage extends StatelessWidget {
                   children: [
                     Obx(
                       () => OutlinedButton(
-                        onPressed: () => botController.toggleStatus(),
+                        onPressed: () => {
+                          if (!botController.isRunning.value)
+                            {botController.toggleStatus()},
+                        },
                         style: OutlinedButton.styleFrom(
                           backgroundColor: botController.isRunning.value
                               ? Colors.grey[300]
@@ -116,7 +132,10 @@ class RobotManagementPage extends StatelessWidget {
                     ),
                     Obx(
                       () => OutlinedButton(
-                        onPressed: () => botController.toggleStatus(),
+                        onPressed: () => {
+                          if (botController.isRunning.value)
+                            {botController.toggleStatus()},
+                        },
                         style: OutlinedButton.styleFrom(
                           backgroundColor: botController.isRunning.value
                               ? null
@@ -294,7 +313,7 @@ class RobotManagementPage extends StatelessWidget {
                   ],
                 ),
               ],
-            ),
+            ]),
           )),
     );
   }

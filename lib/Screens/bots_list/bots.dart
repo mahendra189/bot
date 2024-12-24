@@ -38,7 +38,6 @@ Future<List<Bot>> fetchBots() async {
       DatabaseEvent event = await usersRef.child("$bot").once();
       Map<dynamic, dynamic>? data =
           event.snapshot.value as Map<dynamic, dynamic>?;
-      print(data);
       if (data != null) {
         String name = data["name"];
         String status = data["status"];
@@ -77,12 +76,19 @@ class BotsList extends StatelessWidget {
                 child: Text('Error: ${snapshot.error}')); // Handle errors
           } else if (snapshot.hasData) {
             List<Bot> bots = snapshot.data!; // Get the data
-            return ListView.builder(
-              itemCount: bots.length,
-              itemBuilder: (context, index) {
-                return BotListItem(bot: bots[index]);
-              },
-            );
+            if (bots.isEmpty) {
+              return const ListTile(
+                leading: Icon(Icons.wifi),
+                title: Text("No Bots Available!"),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: bots.length,
+                itemBuilder: (context, index) {
+                  return BotListItem(bot: bots[index]);
+                },
+              );
+            }
           }
           return const Center(
               child: Text('No data available')); // Handle no data
