@@ -1,9 +1,9 @@
 import 'package:bot/Screens/bots_list/bot_model.dart';
+import 'package:bot/Screens/device_details/robot_details.dart';
 import 'package:bot/utils/appBar/bAppBar.dart';
 import 'package:bot/utils/constants/sizes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../../models/bot_model.dart';
@@ -14,7 +14,6 @@ import '../../models/bot_model.dart';
 final databaseRef = FirebaseDatabase.instance.ref(); // Get a database reference
 // fetch data from database
 Future<List<Bot>> fetchBots() async {
-  List<dynamic> bots = [];
   List<Bot> botList = [];
   Future<void> fetchBot() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -27,33 +26,56 @@ Future<List<Bot>> fetchBots() async {
       if (doc.exists) {
         var data = doc.data() as Map<String, dynamic>;
         List<dynamic> botsList = data["bots"];
-        bots = botsList;
-      }
-    } else {
-      bots = [];
-    }
-  }
-
-  Future<void> fetchBotDetails(List<dynamic> bots) async {
-    DatabaseReference usersRef = databaseRef.child('bots');
-    for (var bot in bots) {
-      DatabaseEvent event = await usersRef.child("$bot").once();
-      Map<dynamic, dynamic>? data =
-          event.snapshot.value as Map<dynamic, dynamic>?;
-      if (data != null) {
-        String name = data["name"];
-        String status = data["status"];
-        int batteryLevel = data["batteryLevel"];
-        botList
-            .add(Bot(name: name, status: status, batteryLevel: batteryLevel));
+        for (var bot in botsList) {
+          botList.add(Bot(id: bot['id'], name: bot['name']));
+        }
       }
     }
   }
 
   await fetchBot();
-  await fetchBotDetails(bots);
 
   return botList;
+}
+
+Future<void> handleAddBot(String id, String name) async {
+  Future<List<dynamic>> getLastList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userId = prefs.getString("UID");
+    if (userId != null) {
+      DocumentSnapshot doc = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(userId)
+          .get();
+      if (doc.exists) {
+        var data = doc.data() as Map<String, dynamic>;
+        List<dynamic> botsList = data["bots"];
+        return botsList;
+      } else {
+        return [];
+      }
+    }
+    return [];
+  }
+
+  Future<void> addBot() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userId = prefs.getString("UID");
+    if (userId != null) {
+      List<dynamic> past = await getLastList();
+      await FirebaseFirestore.instance.collection('users').doc(userId).update({
+        'bots': FieldValue.arrayUnion([
+          ...past,
+          {
+            'id': int.parse(id),
+            'name': name,
+          }
+        ])
+      });
+    }
+  }
+
+  await addBot();
 }
 
 class BotsList extends StatelessWidget {
@@ -66,12 +88,11 @@ class BotsList extends StatelessWidget {
         pageName: 'Bots List',
         icon: Icons.add,
         onIconPressed: () {
-          print("Clicki");
           showModalBottomSheet(
               isScrollControlled: true,
               context: context,
               builder: (BuildContext context) {
-                return bottomSheet(context);
+                return const AddBotModel();
               });
         },
       ),
@@ -90,14 +111,22 @@ class BotsList extends StatelessWidget {
             List<Bot> bots = snapshot.data!; // Get the data
             if (bots.isEmpty) {
               return const ListTile(
-                leading: Icon(Icons.wifi),
+                leading: Icon(Icons.wifi_off),
                 title: Text("No Bots Available!"),
               );
             } else {
               return ListView.builder(
                 itemCount: bots.length,
                 itemBuilder: (context, index) {
-                  return BotListItem(bot: bots[index]);
+                  return BotListItem(
+                    bot: bots[index],
+                    onBotPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return RobotManagementPage(bot: bots[index]);
+                      }));
+                    },
+                  );
                 },
               );
             }
@@ -108,10 +137,20 @@ class BotsList extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget bottomSheet(BuildContext context) {
-    TextEditingController botNameController = TextEditingController();
-    TextEditingController botUIController = TextEditingController();
+class AddBotModel extends StatefulWidget {
+  const AddBotModel({super.key});
+
+  @override
+  State<AddBotModel> createState() => _AddBotModel();
+}
+
+class _AddBotModel extends State<AddBotModel> {
+  final TextEditingController botNameController = TextEditingController();
+  final TextEditingController botUIController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
       child: Padding(
@@ -135,16 +174,15 @@ class BotsList extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                TextFormField(
+                TextField(
                   controller: botNameController,
                   decoration: const InputDecoration(
                     labelText: 'Bot Name',
                     border: OutlineInputBorder(),
                   ),
-                  keyboardType: TextInputType.name,
                 ),
                 const SizedBox(height: TSizes.spaceBtwInputFields),
-                TextFormField(
+                TextField(
                   controller: botUIController,
                   decoration: const InputDecoration(
                     labelText: 'Bot ID',
@@ -159,8 +197,12 @@ class BotsList extends StatelessWidget {
                     ElevatedButton(
                       style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.blue)),
-                      onPressed: () => {print("Add Bot")},
+                              WidgetStateProperty.all(Colors.blue)),
+                      onPressed: () {
+                        handleAddBot(
+                            botUIController.text, botNameController.text);
+                        Navigator.pop(context);
+                      },
                       child: const Text(
                         'Add Bot',
                         style: TextStyle(color: Colors.black),
@@ -168,7 +210,6 @@ class BotsList extends StatelessWidget {
                     ),
                     const SizedBox(width: 10),
                     OutlinedButton(
-                      style: ButtonStyle(),
                       child: const Text('Cancel'),
                       onPressed: () => Navigator.pop(context),
                     ),

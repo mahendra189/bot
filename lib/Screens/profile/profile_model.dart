@@ -20,7 +20,6 @@ class ProfileModel {
   Future<void> fetchUserID() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userId = prefs.getString('UID');
-    print(userId);
     if (userId != null) {
       await fetchUserData(userId);
     }
@@ -42,7 +41,7 @@ class ProfileModel {
         );
       }
     } else {
-      print("Select a image");
+      // print("Select a image");
     }
   }
 
@@ -77,12 +76,11 @@ class ProfileModel {
         'profileImageUrl': downloadUrl,
       });
     } catch (e) {
-      print('Error updating profile image URL: $e');
+      // print('Error updating profile image URL: $e');
     }
   }
 
   Future<void> fetchUserData(String userId) async {
-    print(userId);
     try {
       DocumentSnapshot doc = await FirebaseFirestore.instance
           .collection('users')
@@ -97,7 +95,7 @@ class ProfileModel {
         profileImageNotifier.value = data['profileImageUrl'] ?? ''; // Notify UI
       }
     } catch (e) {
-      print('Error fetching user data: $e');
+      // print('Error fetching user data: $e');
     }
   }
 
@@ -116,7 +114,10 @@ class ProfileModel {
         const SnackBar(content: Text('Profile updated successfully')),
       );
     } catch (e) {
-      print('Error updating user data: $e');
+      FocusScope.of(context).unfocus();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Error Updating Profile!!')),
+      );
     }
   }
 }

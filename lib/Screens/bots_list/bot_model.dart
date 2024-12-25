@@ -4,43 +4,48 @@ import 'package:iconsax/iconsax.dart';
 
 class BotListItem extends StatelessWidget {
   final Bot bot;
+  final Function onBotPressed;
 
-  const BotListItem({super.key, required this.bot});
+  const BotListItem({super.key, required this.bot, required this.onBotPressed});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(10),
-      color: Colors.grey[100],
-      elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+    return GestureDetector(
+        onTap: () {
+          onBotPressed();
+        },
+        child: Card(
+          margin: const EdgeInsets.all(10),
+          color: Colors.grey[100],
+          elevation: 5,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(
-                  Iconsax.cpu_charge,
-                  size: 40,
+                Row(
+                  children: [
+                    const Icon(
+                      Iconsax.cpu_charge,
+                      size: 40,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      bot.name,
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  bot.name,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                ),
+                // const SizedBox(height: 5),
+                // Text('Status: ${bot.status}'),
+                // const SizedBox(height: 5),
+                // Text('Battery Level: ${bot.batteryLevel}%'),
               ],
             ),
-            // const SizedBox(height: 5),
-            // Text('Status: ${bot.status}'),
-            // const SizedBox(height: 5),
-            // Text('Battery Level: ${bot.batteryLevel}%'),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }

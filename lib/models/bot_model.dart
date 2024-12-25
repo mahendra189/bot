@@ -4,10 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Bot {
   final String name;
-  final String status;
-  final int batteryLevel;
+  final int id;
 
-  Bot({required this.name, required this.status, required this.batteryLevel});
+  Bot({required this.name, required this.id});
 }
 
 // final databaseRef = FirebaseDatabase.instance.ref(); // Get a database reference
@@ -96,8 +95,9 @@ class BotModal {
     Map<dynamic, dynamic> data = event.snapshot.value as Map<dynamic, dynamic>;
     return Bot(
       name: data["name"],
-      status: data["status"],
-      batteryLevel: data["batteryLevel"],
+      id: data["id"],
+      // status: data["status"],
+      // batteryLevel: data["batteryLevel"],
     );
   }
 

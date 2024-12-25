@@ -20,9 +20,10 @@ import '../../utils/constants/sizes.dart';
 //    frequency -> daily/weekly
 
 class RobotManagementPage extends StatelessWidget {
-  RobotManagementPage({super.key});
+  RobotManagementPage({super.key, required this.bot});
 
   final ValueNotifier<bool> isStarted = ValueNotifier<bool>(false);
+  final Bot bot;
 
   @override
   Widget build(BuildContext context) {
@@ -48,26 +49,26 @@ class RobotManagementPage extends StatelessWidget {
             right: TSizes.lg * 2,
           ),
           child: SingleChildScrollView(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              if (!BotDetail)
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('No Robot Available',
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold)),
-                    const Icon(CupertinoIcons.wifi_slash)
-                  ],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(bot.name,
+                    style: const TextStyle(
+                        fontSize: 35, fontWeight: FontWeight.bold)),
+                Divider(
+                    color: Colors.grey[400],
+                    thickness: 0.7,
+                    indent: 0,
+                    endIndent: 0),
+                const SizedBox(
+                  height: 10,
                 ),
-              // ignore: dead_code
-              if (BotDetail) ...[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text('Status',
                         style: TextStyle(
-                            fontSize: 35, fontWeight: FontWeight.bold)),
+                            fontSize: 25, fontWeight: FontWeight.bold)),
                     Row(
                       children: [
                         Obx(() => Text(
@@ -313,7 +314,7 @@ class RobotManagementPage extends StatelessWidget {
                   ],
                 ),
               ],
-            ]),
+            ),
           )),
     );
   }
