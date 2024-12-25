@@ -1,5 +1,6 @@
 import 'package:bot/models/bot_model.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 class BotListItem extends StatelessWidget {
   final Bot bot;
@@ -17,14 +18,26 @@ class BotListItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              bot.name,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Row(
+              children: [
+                const Icon(
+                  Iconsax.cpu_charge,
+                  size: 40,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  bot.name,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
-            const SizedBox(height: 5),
-            Text('Status: ${bot.status}'),
-            const SizedBox(height: 5),
-            Text('Battery Level: ${bot.batteryLevel}%'),
+            // const SizedBox(height: 5),
+            // Text('Status: ${bot.status}'),
+            // const SizedBox(height: 5),
+            // Text('Battery Level: ${bot.batteryLevel}%'),
           ],
         ),
       ),
