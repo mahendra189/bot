@@ -78,70 +78,76 @@ Future<void> handleAddBot(String id, String name) async {
   await addBot();
 }
 
-class BotsList extends StatelessWidget {
+class BotsList extends StatefulWidget {
   const BotsList({super.key});
+  @override
+  State<BotsList> createState() => _BotsListState();
+}
 
+class _BotsListState extends State<BotsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BAppBar(
-        pageName: 'Bots List',
-        icon: Icons.add,
-        onIconPressed: () {
-          showModalBottomSheet(
-              isScrollControlled: true,
-              context: context,
-              builder: (BuildContext context) {
-                return const AddBotModel();
-              });
-        },
-      ),
-      backgroundColor: Colors.white,
-      body: FutureBuilder<List<Bot>>(
-        future: fetchBots(), // Await the Future from fetchBots()
-        builder: (context, snapshot) {
-          // Check the connection state
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-                child: CircularProgressIndicator()); // Loading indicator
-          } else if (snapshot.hasError) {
-            return Center(
-                child: Text('Error: ${snapshot.error}')); // Handle errors
-          } else if (snapshot.hasData) {
-            List<Bot> bots = snapshot.data!; // Get the data
-            if (bots.isEmpty) {
-              return const ListTile(
-                leading: Icon(Icons.wifi_off),
-                title: Text("No Bots Available!"),
-              );
-            } else {
-              return ListView.builder(
-                itemCount: bots.length,
-                itemBuilder: (context, index) {
-                  return BotListItem(
-                    bot: bots[index],
-                    onBotPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (BuildContext context) {
-                        return RobotManagementPage(bot: bots[index]);
-                      }));
-                    },
-                  );
-                },
-              );
+        appBar: BAppBar(
+          pageName: 'Bots List',
+          icon: Icons.add,
+          onIconPressed: () {
+            showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder: (BuildContext context) {
+                  return AddBotModel(onAddBot: () {
+                    setState(() {});
+                  });
+                });
+          },
+        ),
+        backgroundColor: Colors.white,
+        body: FutureBuilder<List<Bot>>(
+          future: fetchBots(), // Await the Future from fetchBots()
+          builder: (context, snapshot) {
+            // Check the connection state
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                  child: CircularProgressIndicator()); // Loading indicator
+            } else if (snapshot.hasError) {
+              return Center(
+                  child: Text('Error: ${snapshot.error}')); // Handle errors
+            } else if (snapshot.hasData) {
+              List<Bot> bots = snapshot.data!; // Get the data
+              if (bots.isEmpty) {
+                return const ListTile(
+                  leading: Icon(Icons.wifi_off),
+                  title: Text("No Bots Available!"),
+                );
+              } else {
+                return ListView.builder(
+                  itemCount: bots.length,
+                  itemBuilder: (context, index) {
+                    return BotListItem(
+                      bot: bots[index],
+                      onBotPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return RobotManagementPage(bot: bots[index]);
+                        }));
+                      },
+                    );
+                  },
+                );
+              }
             }
-          }
-          return const Center(
-              child: Text('No data available')); // Handle no data
-        },
-      ),
-    );
+            return const Center(
+                child: Text('No data available')); // Handle no data
+          },
+        ));
   }
 }
 
 class AddBotModel extends StatefulWidget {
-  const AddBotModel({super.key});
+  final VoidCallback onAddBot; // Callback to trigger reload
 
+  const AddBotModel({super.key, required this.onAddBot});
   @override
   State<AddBotModel> createState() => _AddBotModel();
 }
@@ -198,9 +204,14 @@ class _AddBotModel extends State<AddBotModel> {
                       style: ButtonStyle(
                           backgroundColor:
                               WidgetStateProperty.all(Colors.blue)),
-                      onPressed: () {
-                        handleAddBot(
+                      onPressed: () async {
+                        // Handle adding the bot to the Firestore
+                        await handleAddBot(
                             botUIController.text, botNameController.text);
+
+                        // Notify parent widget to refresh the list
+                        widget.onAddBot();
+
                         Navigator.pop(context);
                       },
                       child: const Text(
