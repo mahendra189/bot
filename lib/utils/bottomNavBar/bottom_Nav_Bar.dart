@@ -23,9 +23,9 @@ class NavigationMenu extends StatelessWidget {
           onDestinationSelected: (index) =>
               controller.selectedIndex.value = index,
           destinations: const [
-            NavigationDestination(icon: Icon(Iconsax.home), label: 'Home'),
-            NavigationDestination(
-                icon: Icon(Iconsax.devices5), label: 'Robot Details'),
+            // NavigationDestination(icon: Icon(Iconsax.home), label: 'Home'),
+            // NavigationDestination(
+            //     icon: Icon(Iconsax.devices5), label: 'Robot Details'),
             NavigationDestination(icon: Icon(Iconsax.driver), label: 'Bots'),
             NavigationDestination(icon: Icon(Iconsax.user), label: 'Profile'),
           ],
@@ -40,8 +40,8 @@ class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
 
   final screens = [
-    const HomeScreen(),
-    RobotManagementPage(),
+    // const HomeScreen(),
+    // RobotManagementPage(),
     const BotsList(),
     const ProfilePage(),
   ];
