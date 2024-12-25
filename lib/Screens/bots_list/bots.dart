@@ -1,7 +1,9 @@
 import 'package:bot/Screens/bots_list/bot_model.dart';
 import 'package:bot/utils/appBar/bAppBar.dart';
+import 'package:bot/utils/constants/sizes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../../models/bot_model.dart';
@@ -60,8 +62,18 @@ class BotsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const BAppBar(
+      appBar: BAppBar(
         pageName: 'Bots List',
+        icon: Icons.add,
+        onIconPressed: () {
+          print("Clicki");
+          showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (BuildContext context) {
+                return bottomSheet(context);
+              });
+        },
       ),
       backgroundColor: Colors.white,
       body: FutureBuilder<List<Bot>>(
@@ -93,6 +105,82 @@ class BotsList extends StatelessWidget {
           return const Center(
               child: Text('No data available')); // Handle no data
         },
+      ),
+    );
+  }
+
+  Widget bottomSheet(BuildContext context) {
+    TextEditingController botNameController = TextEditingController();
+    TextEditingController botUIController = TextEditingController();
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 15,
+          right: 15,
+          top: MediaQuery.of(context).size.height * 0.05,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Center(
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Text(
+                  'Add a Bot',
+                  style: TextStyle(fontSize: 20),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  controller: botNameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Bot Name',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.name,
+                ),
+                const SizedBox(height: TSizes.spaceBtwInputFields),
+                TextFormField(
+                  controller: botUIController,
+                  decoration: const InputDecoration(
+                    labelText: 'Bot ID',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: TSizes.spaceBtwInputFields),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.blue)),
+                      onPressed: () => {print("Add Bot")},
+                      child: const Text(
+                        'Add Bot',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    OutlinedButton(
+                      style: ButtonStyle(),
+                      child: const Text('Cancel'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

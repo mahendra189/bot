@@ -4,16 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 class BAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const BAppBar({
-      super.key,
+  const BAppBar(
+      {super.key,
       required this.pageName,
-      this.onNotificationPressed,
-      this.color = Colors.white
-      });
+      this.onIconPressed,
+      this.icon = Iconsax.notification,
+      this.color = Colors.white});
 
   final String pageName;
-  final VoidCallback? onNotificationPressed;
+  final VoidCallback? onIconPressed;
   final Color? color;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +28,10 @@ class BAppBar extends StatelessWidget implements PreferredSizeWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
-
       actions: [
         IconButton(
-          icon: const Icon(Iconsax.notification),
-          onPressed: onNotificationPressed,
+          icon: Icon(icon),
+          onPressed: onIconPressed,
         ),
       ],
     );
