@@ -5,12 +5,11 @@ import 'package:get/get.dart';
 import '../../controller/bot_controller.dart';
 
 class CleaningSchedule extends StatelessWidget {
-  const CleaningSchedule({super.key, required this.id});
-  final num id;
+  const CleaningSchedule({super.key, required this.botController});
+  final BotController botController;
   @override
   Widget build(BuildContext context) {
     // Initialize the BotController
-    final BotController botController = Get.put(BotController(id: id));
 
     return Container(
       width: double.infinity,
