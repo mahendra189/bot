@@ -1,8 +1,24 @@
+import 'package:bot/Screens/login/login_page.dart';
 import 'package:bot/Screens/profile/profile_model.dart';
+import 'package:bot/main.dart';
 import 'package:bot/utils/appBar/bAppBar.dart';
 import 'package:bot/utils/constants/sizes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+void handleLogOut() {
+  Future<void> logOut() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    await _auth.signOut();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
+
+  logOut();
+}
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -14,8 +30,17 @@ class ProfilePage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const BAppBar(
+      appBar: BAppBar(
         pageName: 'Profile',
+        icon: Iconsax.logout_1,
+        onIconPressed: () {
+          handleLogOut();
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const AuthWrapper()),
+            (Route<dynamic> route) => false,
+          );
+        },
       ),
       body: Padding(
           padding: const EdgeInsets.only(

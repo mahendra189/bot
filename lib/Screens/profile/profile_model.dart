@@ -102,22 +102,56 @@ class ProfileModel {
   Future<void> updateUserData(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userId = prefs.getString('UID');
-    try {
-      await FirebaseFirestore.instance.collection('users').doc(userId).update({
-        'firstName': fNameController.text,
-        'lastName': lNameController.text,
-        'phoneNumber': phoneNoController.text,
-        'profileImageUrl': profileImageNotifier.value, // Use current image URL
-      });
-      FocusScope.of(context).unfocus();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profile updated successfully')),
-      );
-    } catch (e) {
-      FocusScope.of(context).unfocus();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error Updating Profile!!')),
-      );
+    print("User $userId");
+
+    if (userId != null) {
+      try {
+        // Check if the user document exists
+        DocumentSnapshot doc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .get();
+
+        if (doc.exists) {
+          // If document exists, update it
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(userId)
+              .update({
+            'firstName': fNameController.text,
+            'lastName': lNameController.text,
+            'phoneNumber': phoneNoController.text,
+            'profileImageUrl':
+                profileImageNotifier.value, // Use current image URL
+            'bots': []
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Profile updated successfully')),
+          );
+        } else {
+          // If document doesn't exist, create a new one
+          await FirebaseFirestore.instance.collection('users').doc(userId).set({
+            'firstName': fNameController.text,
+            'lastName': lNameController.text,
+            'phoneNumber': phoneNoController.text,
+            'profileImageUrl':
+                profileImageNotifier.value, // Use current image URL
+            'bots': []
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Profile created successfully')),
+          );
+        }
+
+        // Unfocus keyboard and reset the UI
+        FocusScope.of(context).unfocus();
+      } catch (e) {
+        // In case of an error, show a failure message
+        FocusScope.of(context).unfocus();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Error updating or creating profile')),
+        );
+      }
     }
   }
 }

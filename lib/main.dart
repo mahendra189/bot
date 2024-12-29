@@ -1,4 +1,3 @@
-import 'package:bot/Screens/Home/home.dart';
 import 'package:bot/Screens/login/login_page.dart';
 import 'package:bot/utils/bottomNavBar/bottom_Nav_Bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,7 +28,6 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           fontFamily: 'ProductSans'),
       home: const AuthWrapper(),
-      // home: const LoginScreen(),
     );
   }
 }

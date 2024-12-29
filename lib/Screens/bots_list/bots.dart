@@ -29,6 +29,8 @@ Future<List<Bot>> fetchBots() async {
         for (var bot in botsList) {
           botList.add(Bot(id: bot['id'], name: bot['name']));
         }
+      } else {
+        botList = [];
       }
     }
   }
@@ -39,6 +41,7 @@ Future<List<Bot>> fetchBots() async {
 }
 
 Future<void> handleAddBot(String id, String name) async {
+  // Function to get the last list of bots from Firestore
   Future<List<dynamic>> getLastList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userId = prefs.getString("UID");
@@ -49,7 +52,8 @@ Future<void> handleAddBot(String id, String name) async {
           .get();
       if (doc.exists) {
         var data = doc.data() as Map<String, dynamic>;
-        List<dynamic> botsList = data["bots"];
+        print("data $data");
+        List<dynamic> botsList = (data['bots'] ?? []) as List<dynamic>;
         return botsList;
       } else {
         return [];
@@ -58,11 +62,17 @@ Future<void> handleAddBot(String id, String name) async {
     return [];
   }
 
+  // Function to add the bot to Firestore and Realtime Database
   Future<void> addBot() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userId = prefs.getString("UID");
+
     if (userId != null) {
+      // Get the last list of bots
       List<dynamic> past = await getLastList();
+      print("Past: $past");
+
+      // Add the bot to Firestore (User's bot list)
       await FirebaseFirestore.instance.collection('users').doc(userId).update({
         'bots': FieldValue.arrayUnion([
           ...past,
@@ -72,9 +82,21 @@ Future<void> handleAddBot(String id, String name) async {
           }
         ])
       });
+
+      // Add the bot to Firebase Realtime Database
+      DatabaseReference _database = FirebaseDatabase.instance.ref();
+      await _database.child('bots/$id').set({
+        'device_name': name,
+        'status': 'resting', // Default status
+        'battery_level': 100, // Default battery level
+        'frequency': 'N/A', // Default frequency
+        'last_cleaned': 'N/A', // Default last cleaned
+        'next_cleaning': 'N/A', // Default next cleaning
+      });
     }
   }
 
+  // Call the addBot function to add the bot
   await addBot();
 }
 
@@ -128,7 +150,7 @@ class _BotsListState extends State<BotsList> {
                       bot: bots[index],
                       onBotPressed: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) {
+                            MaterialPageRoute(builder: (context) {
                           return RobotManagementPage(bot: bots[index]);
                         }));
                       },
