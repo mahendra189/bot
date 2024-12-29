@@ -5,30 +5,31 @@ import 'package:get/get.dart';
 import '../../controller/bot_controller.dart';
 
 class CleaningSchedule extends StatelessWidget {
-  const CleaningSchedule({super.key});
-
+  const CleaningSchedule({super.key, required this.id});
+  final num id;
   @override
   Widget build(BuildContext context) {
     // Initialize the BotController
-    final BotController botController = Get.put(BotController());
+    final BotController botController = Get.put(BotController(id: id));
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(1),
+      margin: const EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 7,
-            offset: const Offset(0, 3), // changes position of shadow
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Colors.grey.withOpacity(0.5),
+        //     spreadRadius: 1,
+        //     blurRadius: 7,
+        //     offset: const Offset(0, 3), // changes position of shadow
+        //   ),
+        // ],
       ),
       child: Padding(
-        padding: const EdgeInsets.only(top: 10, left: 23, right: 23, bottom: 10),
+        padding: const EdgeInsets.only(top: 0, left: 0, right: 0, bottom: 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -45,8 +46,10 @@ class CleaningSchedule extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 21, fontWeight: FontWeight.w600)),
                     Obx(
-                      ()=> Text(botController.nextCleaning.value,
-                          style: TextStyle(fontWeight: FontWeight.normal, color: Colors.grey.shade600)),
+                      () => Text(botController.nextCleaning.value,
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey.shade600)),
                     ),
                   ],
                 ),
@@ -78,8 +81,10 @@ class CleaningSchedule extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 21, fontWeight: FontWeight.w600)),
                     Obx(
-                        ()=> Text(botController.frequency.value,
-                          style: TextStyle(fontWeight: FontWeight.normal, color: Colors.grey.shade600)),
+                      () => Text(botController.frequency.value,
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey.shade600)),
                     ),
                   ],
                 ),
@@ -112,7 +117,9 @@ class CleaningSchedule extends StatelessWidget {
                             fontSize: 21, fontWeight: FontWeight.w600)),
                     Obx(
                       () => Text(botController.lastCleaned.value,
-                          style: TextStyle(fontWeight: FontWeight.normal, color: Colors.grey.shade600)),
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey.shade600)),
                     ),
                   ],
                 ),

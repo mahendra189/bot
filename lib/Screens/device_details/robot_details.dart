@@ -1,3 +1,4 @@
+import 'package:bot/Screens/Home/cleaning_schedule.dart';
 import 'package:bot/controller/bot_controller.dart';
 import 'package:bot/models/bot_model.dart';
 import 'package:bot/utils/appBar/bAppBar.dart';
@@ -24,19 +25,21 @@ class RobotManagementPage extends StatelessWidget {
 
   final ValueNotifier<bool> isStarted = ValueNotifier<bool>(false);
   final Bot bot;
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   fetchData(); // Fetch data when the controller is initialized
+  // }
 
   @override
   Widget build(BuildContext context) {
     // Initialize the BotController
-    final BotController botController = Get.put(BotController());
-    final BotModal model = BotModal();
-    final BotDetail = false;
+    final BotController botController = Get.put(BotController(id: bot.id));
     // Replace this with the time fetched from the API
     final relativeTime = botController.nextCleaning.value;
     final scheduledTime = parseRelativeTime(relativeTime);
     final remainingTime = getRemainingTime(scheduledTime);
-
-    final formattedScheduledTime = DateFormat('h:mma').format(scheduledTime);
+    DateFormat('h:mma').format(scheduledTime);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const BAppBar(
@@ -52,7 +55,7 @@ class RobotManagementPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(bot.name,
+                Text(botController.deviceName.value,
                     style: const TextStyle(
                         fontSize: 35, fontWeight: FontWeight.bold)),
                 Divider(
@@ -219,7 +222,7 @@ class RobotManagementPage extends StatelessWidget {
                         height: 8,
                         width: 300,
                         child: LinearProgressIndicator(
-                          value: 0.50,
+                          value: botController.batteryLevel.value,
                           backgroundColor: Colors.grey.shade300,
                           valueColor:
                               const AlwaysStoppedAnimation<Color>(Colors.black),
@@ -313,6 +316,7 @@ class RobotManagementPage extends StatelessWidget {
                     ),
                   ],
                 ),
+                CleaningSchedule(id: bot.id),
               ],
             ),
           )),

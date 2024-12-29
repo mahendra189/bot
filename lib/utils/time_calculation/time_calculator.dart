@@ -6,19 +6,19 @@ DateTime parseRelativeTime(String relativeTime) {
   final now = DateTime.now();
   relativeTime = "Tomorrow 7:00pm";
   relativeTime = relativeTime.trim().toLowerCase();
-  print("Parsing relative time: $relativeTime");
-  print(relativeTime);
+  // print("Parsing relative time: $relativeTime");
+  // print(relativeTime);
 
   try {
     if (relativeTime.startsWith("tomorrow")) {
       final timePart = relativeTime.replaceFirst("tomorrow", "").trim();
-      print("Time part: $timePart");
+      // print("Time part: $timePart");
       final time = DateFormat("HH:mm", "en_US")
           .parse(timePart); // Changed to 24-hour format
       return DateTime(now.year, now.month, now.day + 1, time.hour, time.minute);
     } else if (relativeTime.startsWith("today")) {
       final timePart = relativeTime.replaceFirst("today", "").trim();
-      print("Time part: $timePart");
+      // print("Time part: $timePart");
       final time = DateFormat("HH:mm", "en_US")
           .parse(timePart); // Changed to 24-hour format
       return DateTime(now.year, now.month, now.day, time.hour, time.minute);
@@ -26,7 +26,7 @@ DateTime parseRelativeTime(String relativeTime) {
       throw const FormatException("Unsupported relative time format");
     }
   } catch (e) {
-    print("Error parsing time: $e");
+    // print("Error parsing time: $e");
     throw FormatException("Error parsing time: $e");
   }
 }
@@ -34,10 +34,10 @@ DateTime parseRelativeTime(String relativeTime) {
 void main() {
   try {
     final scheduledTime = parseRelativeTime("Tomorrow 7:00pm");
-    print("Scheduled Time: $scheduledTime");
+    // print("Scheduled Time: $scheduledTime");
 
     final remainingTime = getRemainingTime(scheduledTime);
-    print("Remaining Time: $remainingTime");
+    // print("Remaining Time: $remainingTime");
   } catch (e) {
     print("Exception: $e");
   }
